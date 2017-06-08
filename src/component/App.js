@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
-import { Nav, NavItem } from 'react-bootstrap';
+import { Nav, NavItem, Row, Col } from 'react-bootstrap';
 import PointSpender from "./PointSpender";
+// import PartyMemberList from "./PartyMemberList";
+import PartyMemberCard from "./PartyMemberCard";
+import { MuiThemeProvider } from 'material-ui';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+injectTapEventPlugin();
+
 
 class App extends Component {
     constructor() {
@@ -13,7 +20,7 @@ class App extends Component {
     handleClick = (selectedKey) => {
         const demoMap = {
             1: <PointSpender/>,
-            2: <h1>Demo 2 coming soon</h1>,
+            2: <PartyMemberCard/>,
             3: <h1>Demo 3 coming soonish</h1>
         };
 
@@ -26,24 +33,26 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <div className="container">
-                    <div className="row">
-                        <h1>React Demos</h1>
+                <MuiThemeProvider>
+                    <div className="container">
+                        <Row>
+                            <h1>React Demos</h1>
+                        </Row>
+                        <Row>
+                            <Col sm={3}>
+                                <h3>Demos</h3>
+                                <Nav stacked activeKey={1} onSelect={this.handleClick}>
+                                    <NavItem eventKey={1}>Point Spender</NavItem>
+                                    <NavItem eventKey={2}>Random Card</NavItem>
+                                    <NavItem eventKey={3}>Some Text</NavItem>
+                                </Nav>
+                            </Col>
+                            <Col sm={9}>
+                                {this.state.content}
+                            </Col>
+                        </Row>
                     </div>
-                    <div className="row">
-                        <div className="col-sm-3">
-                            <h3>Demos</h3>
-                            <Nav stacked activeKey={1} onSelect={this.handleClick}>
-                                <NavItem eventKey={1}>Demo 1</NavItem>
-                                <NavItem eventKey={2}>Demo 2</NavItem>
-                                <NavItem eventKey={3}>Demo 3</NavItem>
-                            </Nav>
-                        </div>
-                        <div className="col-sm-9">
-                            {this.state.content}
-                        </div>
-                    </div>
-                </div>
+                </MuiThemeProvider>
             </div>
         );
     }
