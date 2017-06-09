@@ -1,32 +1,36 @@
 import React from 'react';
-import { Card, CardHeader, CardActions, CardText} from 'material-ui';
-import { FlatButton } from 'material-ui';
+import {Card, CardActions, CardText, CardTitle} from 'material-ui';
+import {FlatButton} from 'material-ui';
+import PropTypes from 'prop-types';
+
+const cardStyle = {
+    paddingBottom: "2rem",
+};
 
 function PartyMemberCard(props) {
+    const partyMember = props.partyMember;
     return (
-        <Card>
-            <CardHeader
-                title={"Without Avatar"}
-                subtitle={"Subtitle"}
-            />
-            <CardText>
-                Some stuff to say about the world in a few short words.
-            </CardText>
-            <CardActions>
-                <FlatButton label={"Action1"}/>
-                <FlatButton label={"Action2"}/>
-            </CardActions>
-        </Card>
-        // <div className="card" style={{width: "20rem"}}>
-        //     <div className="card-block">
-        //         <h4 className="card-title">Card Title</h4>
-        //         <h6 className="card-subtitle">Card Subtitle</h6>
-        //         <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        //         <a href="#" className="card-link">Card Link</a>
-        //         <a href="#" className="card-link">Another</a>
-        //     </div>
-        // </div>
+        <div className="partymembercard" style={cardStyle}>
+            <Card>
+                <CardTitle
+                    title={partyMember.name}
+                    subtitle={partyMember.role}/>
+                <CardText>
+                    Strength: {partyMember.strength}, Dexterity: {partyMember.dexterity},
+                    Intelligence: {partyMember.intelligence}, Health: {partyMember.health}
+                </CardText>
+                <CardActions>
+                    <FlatButton label={props.actionLabel} onClick={props.actionOnClick}/>
+                </CardActions>
+            </Card>
+        </div>
     );
 }
+
+PartyMemberCard.propTypes = {
+    partyMember: PropTypes.object.isRequired,
+    actionLabel: PropTypes.string.isRequired,
+    actionOnClick: PropTypes.func.isRequired,
+};
 
 export default PartyMemberCard;

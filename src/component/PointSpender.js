@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import { Row, Col } from 'react-bootstrap';
 import UpDownCounter from "./UpDownCounter"
 
 class PointSpender extends Component {
@@ -27,39 +28,39 @@ class PointSpender extends Component {
 
     render() {
         return (
-            <div className="row">
-                <div className="col-sm-12">
+            <Row>
+                <Col sm={12}>
                     <h1>Points To Spend: {this.state.points}</h1>
-                </div>
-                <div className="col-sm-6">
+                </Col>
+                <Col sm={6}>
                     <UpDownCounter
                         name="Strength"
                         value={this.state.strength}
                         handleUpClick={() => this.handleClick("strength", 1)}
                         handleDownClick={() => this.handleClick("strength", -1)}/>
-                </div>
-                <div className="col-sm-6">
+                </Col>
+                <Col sm={6}>
                     <UpDownCounter
                         name="Dexterity"
                         value={this.state.dexterity}
                         handleUpClick={() => this.handleClick("dexterity", 1)}
                         handleDownClick={() => this.handleClick("dexterity", -1)}/>
-                </div>
-                <div className="col-sm-6">
+                </Col>
+                <Col sm={6}>
                     <UpDownCounter
                         name="Intelligence"
                         value={this.state.intelligence}
                         handleUpClick={() => this.handleClick("intelligence", 1)}
                         handleDownClick={() => this.handleClick("intelligence", -1)}/>
-                </div>
-                <div className="col-sm-6">
+                </Col>
+                <Col sm={6}>
                     <UpDownCounter
                         name="Health"
                         value={this.state.health}
                         handleUpClick={() => this.handleClick("health", 1)}
                         handleDownClick={() => this.handleClick("health", -1)}/>
-                </div>
-            </div>
+                </Col>
+            </Row>
         );
     }
 }

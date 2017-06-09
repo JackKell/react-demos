@@ -1,26 +1,24 @@
 import React, { Component } from 'react';
 import { Nav, NavItem, Row, Col } from 'react-bootstrap';
 import PointSpender from "./PointSpender";
-// import PartyMemberList from "./PartyMemberList";
-import PartyMemberCard from "./PartyMemberCard";
+import PartyBuilder from "./PartyBuilder";
 import { MuiThemeProvider } from 'material-ui';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 injectTapEventPlugin();
 
-
 class App extends Component {
     constructor() {
         super();
         this.state = {
-            content: <PointSpender/>
+            content: <PartyBuilder maxPartySize={3}/>
         }
     }
 
     handleClick = (selectedKey) => {
         const demoMap = {
             1: <PointSpender/>,
-            2: <PartyMemberCard/>,
+            2: <PartyBuilder maxPartySize={3}/>,
             3: <h1>Demo 3 coming soonish</h1>
         };
 
@@ -43,8 +41,8 @@ class App extends Component {
                                 <h3>Demos</h3>
                                 <Nav stacked activeKey={1} onSelect={this.handleClick}>
                                     <NavItem eventKey={1}>Point Spender</NavItem>
-                                    <NavItem eventKey={2}>Random Card</NavItem>
-                                    <NavItem eventKey={3}>Some Text</NavItem>
+                                    <NavItem eventKey={2}>Party Builder</NavItem>
+                                    <NavItem eventKey={3}>Demo 3</NavItem>
                                 </Nav>
                             </Col>
                             <Col sm={9}>
