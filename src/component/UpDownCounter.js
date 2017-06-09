@@ -1,6 +1,6 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
-import { RaisedButton } from 'material-ui';
+import {Row, Col} from 'react-bootstrap';
+import {RaisedButton} from 'material-ui';
 import PropTypes from 'prop-types';
 
 const UpDownCounter = (props) => {
@@ -19,7 +19,7 @@ const UpDownCounter = (props) => {
             </Col>
         </Row>
     );
-}
+};
 
 UpDownCounter.propTypes = {
     name: PropTypes.string.isRequired,
