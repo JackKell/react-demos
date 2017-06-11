@@ -3,14 +3,10 @@ import {Card, CardActions, CardText, CardTitle} from 'material-ui';
 import {FlatButton} from 'material-ui';
 import PropTypes from 'prop-types';
 
-const cardStyle = {
-    paddingBottom: "2rem",
-};
-
 function PartyMemberCard(props) {
     const partyMember = props.partyMember;
     return (
-        <div className="partymembercard" style={cardStyle}>
+        <div className="partymembercard" style={props.style}>
             <Card>
                 <CardTitle
                     title={partyMember.name}

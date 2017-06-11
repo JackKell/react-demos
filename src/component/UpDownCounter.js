@@ -3,17 +3,21 @@ import {Row, Col} from 'react-bootstrap';
 import {RaisedButton} from 'material-ui';
 import PropTypes from 'prop-types';
 
+//style={{height: "50px"}}
+
 const UpDownCounter = (props) => {
     return (
         <Row>
             <Col sm={6}>
-                <h3>{props.name} : {props.value}</h3>
+                <Row>
+                    <h3>{props.name} : {props.value}</h3>
+                </Row>
             </Col>
             <Col sm={6}>
-                <Row style={{height: "50px"}}>
+                <Row>
                     <RaisedButton label={props.upLabel} onClick={props.handleUpClick}/>
                 </Row>
-                <Row style={{height: "50px"}}>
+                <Row>
                     <RaisedButton label={props.downLabel} onClick={props.handleDownClick}/>
                 </Row>
             </Col>

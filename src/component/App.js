@@ -1,31 +1,32 @@
-import React, { Component } from 'react';
-import { Nav, NavItem, Row, Col } from 'react-bootstrap';
+import React, {Component} from 'react';
+import {Nav, NavItem, Row, Col} from 'react-bootstrap';
 import PointSpender from "./PointSpender";
 import PartyBuilder from "./PartyBuilder";
-import { MuiThemeProvider } from 'material-ui';
+import {MuiThemeProvider} from 'material-ui';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import CharacterCreator from './CharacterCreator';
 
 injectTapEventPlugin();
 
 class App extends Component {
+    demoMap = {
+        1: <PointSpender/>,
+        2: <PartyBuilder maxPartySize={3}/>,
+        3: <CharacterCreator/>,
+    };
+
     constructor() {
         super();
         this.state = {
-            content: <PartyBuilder maxPartySize={3}/>
-        }
+            content: this.demoMap[3],
+        };
     }
 
     handleClick = (selectedKey) => {
-        const demoMap = {
-            1: <PointSpender/>,
-            2: <PartyBuilder maxPartySize={3}/>,
-            3: <h1>Demo 3 coming soonish</h1>
-        };
-
         this.setState({
-                content: demoMap[selectedKey],
-            }
-        );
+            ...this.state,
+            content: this.demoMap[selectedKey],
+        });
     };
 
     render() {
@@ -42,7 +43,7 @@ class App extends Component {
                                 <Nav stacked activeKey={1} onSelect={this.handleClick}>
                                     <NavItem eventKey={1}>Point Spender</NavItem>
                                     <NavItem eventKey={2}>Party Builder</NavItem>
-                                    <NavItem eventKey={3}>Demo 3</NavItem>
+                                    <NavItem eventKey={3}>Character Creator</NavItem>
                                 </Nav>
                             </Col>
                             <Col sm={9}>

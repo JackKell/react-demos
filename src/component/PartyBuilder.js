@@ -79,8 +79,6 @@ class PartyBuilder extends Component {
                 currentPartyMembers: newCurrentPartyMembers,
                 availablePartyMembers: newAvailablePartyMembers,
             });
-        } else {
-            alert("Party size may not exceed " + this.props.maxPartySize + " party member(s)");
         }
     };
 
