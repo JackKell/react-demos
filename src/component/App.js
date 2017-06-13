@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {Nav, NavItem, Row, Col} from 'react-bootstrap';
+import {Nav, NavItem} from 'react-bootstrap';
+import {Row, Col, Container} from "react-grid-system";
 import PointSpender from "./PointSpender";
 import PartyBuilder from "./PartyBuilder";
 import {MuiThemeProvider} from 'material-ui';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import CharacterCreator from './CharacterCreator';
+import CharacterCreator from './CharacterCreator/CharacterCreator';
 
 injectTapEventPlugin();
 
@@ -33,7 +34,7 @@ class App extends Component {
         return (
             <div className="App">
                 <MuiThemeProvider>
-                    <div className="container">
+                    <Container>
                         <Row>
                             <h1>React Demos</h1>
                         </Row>
@@ -50,7 +51,7 @@ class App extends Component {
                                 {this.state.content}
                             </Col>
                         </Row>
-                    </div>
+                    </Container>
                 </MuiThemeProvider>
             </div>
         );

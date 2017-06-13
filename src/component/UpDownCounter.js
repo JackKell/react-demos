@@ -1,27 +1,21 @@
 import React from 'react';
-import {Row, Col} from 'react-bootstrap';
+import {Row, Col} from 'react-grid-system';
 import {RaisedButton} from 'material-ui';
 import PropTypes from 'prop-types';
 
-//style={{height: "50px"}}
-
 const UpDownCounter = (props) => {
     return (
-        <Row>
-            <Col sm={6}>
+        <div>
+            <Col sm={6} md={6}>
                 <Row>
-                    <h3>{props.name} : {props.value}</h3>
+                    <h4>{props.name}: {props.value}</h4>
                 </Row>
             </Col>
-            <Col sm={6}>
-                <Row>
-                    <RaisedButton label={props.upLabel} onClick={props.handleUpClick}/>
-                </Row>
-                <Row>
-                    <RaisedButton label={props.downLabel} onClick={props.handleDownClick}/>
-                </Row>
+            <Col sm={6} md={6}>
+                <RaisedButton label={props.upLabel} onClick={props.handleUpClick}/>
+                <RaisedButton label={props.downLabel} onClick={props.handleDownClick}/>
             </Col>
-        </Row>
+        </div>
     );
 };
 

@@ -1,9 +1,5 @@
 import React, {Component} from 'react';
 import PartyMemberCard from './PartyMemberCard';
-import Subheader from 'material-ui/Subheader';
-import {List, ListItem} from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import Paper from 'material-ui/Paper';
 import PropTypes from 'prop-types';
 
 const cardStyle = {
