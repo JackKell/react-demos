@@ -5,7 +5,7 @@ import {Stepper, Step, StepButton} from 'material-ui';
 import {RaisedButton} from 'material-ui';
 import {Paper} from 'material-ui';
 import CombatStatAssigner from './CombatStatAssigner';
-import camelCase from 'camelcase';
+// import camelCase from 'camelcase';
 import decamelize from 'decamelize';
 import toTitleCase from 'to-title-case';
 
@@ -121,10 +121,9 @@ class CharacterCreator extends Component {
     };
 
     handleCharacterBackgroundChange = (buff, skill, newValue) => {
-        // console.log(this.state.character);
         let previouslyBuffedSkill = this.state.character.background[buff];
         previouslyBuffedSkill = previouslyBuffedSkill !== "" ? previouslyBuffedSkill : false;
-        console.log(previouslyBuffedSkill);
+
         this.setState({
             ...this.state,
             character: {
@@ -140,7 +139,6 @@ class CharacterCreator extends Component {
                 }
             }
         });
-        // console.log(this.state.character);
     };
 
     handleCharacterStatClick = (stat, delta) => {
@@ -162,7 +160,7 @@ class CharacterCreator extends Component {
                 }
             });
         }
-    }
+    };
 
     handleCharacterStatChange = (stat, delta) => {
         const baseStatValue = this.state.baseStats[stat];
@@ -334,24 +332,12 @@ class CharacterCreator extends Component {
                 return (
                     <CombatStatAssigner
                         character={this.state.character}
-                        handleHpUp={() => this.handleCharacterStatChange("hp", 1)}
-                        handleHpDown={() => this.handleCharacterStatChange("hp", -1)}
-                        handleAtkUp={() => this.handleCharacterStatChange("attack", 1)}
-                        handleAtkDown={() => this.handleCharacterStatChange("attack", -1)}
-                        handleSpeedUp={() => this.handleCharacterStatChange("speed", 1)}
-                        handleSpeedDown={() => this.handleCharacterStatChange("speed", -1)}
-                        handleDefUp={() => this.handleCharacterStatChange("defense", 1)}
-                        handleDefDown={() => this.handleCharacterStatChange("defense", -1)}
-                        handleSpDefUp={() => this.handleCharacterStatChange("specialDefense", 1)}
-                        handleSpDefDown={() => this.handleCharacterStatChange("specialDefense", -1)}
-                        handleSpAtkUp={() => this.handleCharacterStatChange("specialAttack", 1)}
-                        handleSpAtkDown={() => this.handleCharacterStatChange("specialAttack", -1)}/>
+                        handleClick={(stat, delta) => this.handleCharacterStatChange(stat, delta)}/>
                 );
             case 5:
                 return (
                     <div>
                         <h3>Create Basic Description</h3>
-
                     </div>
                 );
             case 6:

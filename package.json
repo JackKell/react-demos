@@ -1,7 +1,7 @@
 {
   "name": "reactdemos",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "bootstrap": "^3.3.7",
     "camelcase": "^4.1.0",
