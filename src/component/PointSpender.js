@@ -17,11 +17,12 @@ class PointSpender extends Component {
 
     handleClick = (valueToChange, delta) => {
         if (this.state.points - delta >= 0) {
-            let newState = this.state;
-            if (newState[valueToChange] + delta >= this.state.minStat) {
-                newState[valueToChange] = newState[valueToChange] + delta;
-                newState["points"] = this.state.points - delta;
-                this.setState(newState);
+            if (this.state[valueToChange] + delta >= this.state.minStat) {
+                this.setState({
+                    ...this.state,
+                    points: this.state.points - delta,
+                    [valueToChange]: this.state[valueToChange] + delta,
+                });
             }
         }
     };

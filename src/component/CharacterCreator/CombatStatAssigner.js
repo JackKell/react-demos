@@ -2,21 +2,9 @@ import React from 'react';
 import {Row, Col} from 'react-grid-system';
 import UpDownCounter from '../UpDownCounter';
 import PropTypes from 'prop-types';
+import Utility from '../utility';
 
 const CombatStatAssigner = (props) => {
-    const speedEvasion = Math.floor(props.character.stats.speed / 5);
-    const physicalEvasion = Math.floor(props.character.stats.defense / 5);
-    const specialEvasion = Math.floor(props.character.stats.specialDefense / 5);
-    const hitPoints = props.character.level * 2 + (props.character.stats.hp * 3) + 10;
-    const actionPoints = Math.floor(props.character.level / 5) + 5;
-    const overlandSpeed = Math.floor((props.character.skills.athletics + props.character.skills.acrobatics) / 2) + 3;
-    const swimSpeed = Math.floor(overlandSpeed / 2);
-    const power = 0;
-    const highJump = 0;
-    const longJump = Math.floor(props.character.skills.acrobatics / 2);
-    const throwRange = 4 + props.character.skills.athletics;
-    const size = 0;
-
     return (
         <div>
             <Row>
@@ -25,6 +13,9 @@ const CombatStatAssigner = (props) => {
                 </Col>
                 <Col sm={12}>
                     <h3>Level: {props.character.level}</h3>
+                </Col>
+                <Col sm={12}>
+                    <h3>Stat Points: {props.character.statPoints}</h3>
                 </Col>
                 <Col sm={6}>
                     <UpDownCounter
@@ -69,17 +60,19 @@ const CombatStatAssigner = (props) => {
                         value={props.character.stats.speed}/>
                 </Col>
                 <Col sm={12}>
-                    <h4>Speed Evasion: {speedEvasion}</h4>
-                    <h4>Physical Evasion: {physicalEvasion}</h4>
-                    <h4>Special Evasion: {specialEvasion}</h4>
-                    <h4>Hit Points: {hitPoints}</h4>
-                    <h4>Action Points: {actionPoints}</h4>
-                    <h4>Overland: {overlandSpeed}</h4>
-                    <h4>Swim speed: {swimSpeed}</h4>
-                    <h4>Power: I did not want to write this one yet</h4>
-                    <h4>High Jump: I did not want to write this one yet</h4>
-                    <h4>Long Jump: {longJump}</h4>
-                    <h4>Size: I did not want to write this yet</h4>
+                    <h4>Speed Evasion: {Utility.getSpeedEvasion(props.character.stats.speed)}</h4>
+                    <h4>Physical Evasion: {Utility.getPhysicalEvasion(props.character.stats.defense)}</h4>
+                    <h4>Special Evasion: {Utility.getSpecialEvasion(props.character.stats.specialDefense)}</h4>
+                    <h4>Hit Points: {Utility.getHitPoints(props.character.level, props.character.stats.hp)}</h4>
+                    <h4>Action Points: {Utility.getActionPoints(props.character.level)}</h4>
+                    <h4>Overland: {Utility.getOverlandSpeed(props.character.skills.athletics, props.character.skills.acrobatics)}</h4>
+                    <h4>Swim speed: {Utility.getSwimSpeed(props.character.skills.athletics, props.character.skills.acrobatics)}</h4>
+                    <h4>Power: {Utility.getPower(props.character.skills.athletics, props.character.skills.combat)}</h4>
+                    <h4>High Jump: {Utility.getHighJump(props.character.skills.acrobatics, props.character.skills.combat)}</h4>
+                    <h4>Long Jump: {Utility.getLongJump(props.character.skills.acrobatics)}</h4>
+                    <h4>Size: {Utility.getSize(props.character.weight)}</h4>
+                    <h4>Weight Class: {Utility.getWeightClass(props.character.weight)}</h4>
+                    <h4>Throw Range: {Utility.getThrowRange(props.character.skills.athletics)}</h4>
                 </Col>
             </Row>
         </div>

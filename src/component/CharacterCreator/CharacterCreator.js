@@ -5,6 +5,9 @@ import {Stepper, Step, StepButton} from 'material-ui';
 import {RaisedButton} from 'material-ui';
 import {Paper} from 'material-ui';
 import CombatStatAssigner from './CombatStatAssigner';
+import camelCase from 'camelcase';
+import decamelize from 'decamelize';
+import toTitleCase from 'to-title-case';
 
 const titlePaperStyle = {
     padding: "10px",
@@ -28,36 +31,30 @@ class CharacterCreator extends Component {
         super();
         this.state = {
             stepIndex: 4,
-            skills: [
-                "Acrobatics",
-                "Athletics",
-                "Combat",
-                "Intimidate",
-                "Stealth",
-                "Survival",
-                "General Edu",
-                "Occult Edu",
-                "Pokemon Edu",
-                "Technology Edu",
-                "Guile",
-                "Perception",
-                "Charm",
-                "Command",
-                "Focus",
-                "Intuition",
-            ],
+            baseStats: {
+                hp: 10,
+                attack: 5,
+                defense: 5,
+                specialAttack: 5,
+                specialDefense: 5,
+                speed: 5,
+            },
+            maxStateChange: 5,
             character: {
                 level: 1,
+                statPoints: 10,
                 name: "",
                 age: "",
                 gender: "",
                 height: "",
                 weight: "",
-                adeptSkill: "",
-                noviceSkill: "",
-                patheticSkill1: "",
-                patheticSkill2: "",
-                patheticSkill3: "",
+                background: {
+                    adeptSkill: "",
+                    noviceSkill: "",
+                    patheticSkill1: "",
+                    patheticSkill2: "",
+                    patheticSkill3: "",
+                },
                 description: "",
                 skills: {
                     acrobatics: 2,
@@ -66,10 +63,10 @@ class CharacterCreator extends Component {
                     intimidate: 2,
                     stealth: 2,
                     survival: 2,
-                    generalEdu: 2,
-                    occultEdu: 2,
-                    pokemonEdu: 2,
-                    technologyEdu: 2,
+                    generalEducation: 2,
+                    occultEducation: 2,
+                    pokemonEducation: 2,
+                    technologyEducation: 2,
                     guile: 2,
                     perception: 2,
                     charm: 2,
@@ -92,16 +89,10 @@ class CharacterCreator extends Component {
     }
 
     skillsMenuItemList = () => {
-        return this.state.skills.map((skill) => {
-            if (skill !== this.state.character.adeptSkill &&
-                skill !== this.state.character.noviceSkill &&
-                skill !== this.state.character.patheticSkill1 &&
-                skill !== this.state.character.patheticSkill2 &&
-                skill !== this.state.character.patheticSkill3) {
-                return (<MenuItem key={skill} value={skill} primaryText={skill} />);
-            } else {
-                return (<MenuItem key={skill} value={skill} primaryText={skill} disabled={true} />);
-            }
+        return Object.keys(this.state.character.skills).map((skill) => {
+            const skillText = toTitleCase(decamelize(skill, " "));
+            const isDisabled = Object.values(this.state.character.background).includes(skill);
+            return (<MenuItem key={skill} value={skill} primaryText={skillText} disabled={isDisabled} />);
         });
     };
 
@@ -129,17 +120,69 @@ class CharacterCreator extends Component {
         });
     };
 
-    handleCharacterStatChange = (stat, delta) => {
+    handleCharacterBackgroundChange = (buff, skill, newValue) => {
+        // console.log(this.state.character);
+        let previouslyBuffedSkill = this.state.character.background[buff];
+        previouslyBuffedSkill = previouslyBuffedSkill !== "" ? previouslyBuffedSkill : false;
+        console.log(previouslyBuffedSkill);
         this.setState({
             ...this.state,
             character: {
                 ...this.state.character,
-                stats: {
-                    ...this.state.character.stats,
-                    [stat]: this.state.character.stats[stat] + delta
+                background: {
+                    ...this.state.character.background,
+                    [buff]: skill,
+                },
+                skills: {
+                    ...this.state.character.skills,
+                    [skill]: newValue,
+                    [previouslyBuffedSkill]: 2,
                 }
             }
         });
+        // console.log(this.state.character);
+    };
+
+    handleCharacterStatClick = (stat, delta) => {
+        const baseStatValue = this.state.baseStats[stat];
+        const currentStatValue = this.state.character.stats[stat];
+        const newStatValue = currentStatValue + delta;
+        if (newStatValue >= baseStatValue &&
+            newStatValue <= baseStatValue + this.state.maxStateChange &&
+            this.state.character.statPoints - delta >= 0) {
+            this.setState({
+                ...this.state,
+                character: {
+                    ...this.state.character,
+                    stats: {
+                        ...this.state.character.stats,
+                        [stat]: newStatValue,
+                    },
+                    statPoints: this.state.character.statPoints - delta,
+                }
+            });
+        }
+    }
+
+    handleCharacterStatChange = (stat, delta) => {
+        const baseStatValue = this.state.baseStats[stat];
+        const currentStatValue = this.state.character.stats[stat];
+        const newStatValue = currentStatValue + delta;
+        if (newStatValue >= baseStatValue &&
+            newStatValue <= baseStatValue + this.state.maxStateChange &&
+            this.state.character.statPoints - delta >= 0) {
+            this.setState({
+                ...this.state,
+                character: {
+                    ...this.state.character,
+                    stats: {
+                        ...this.state.character.stats,
+                        [stat]: newStatValue,
+                    },
+                    statPoints: this.state.character.statPoints - delta,
+                }
+            });
+        }
     };
 
     // TODO: Make each step's content into a component
@@ -220,41 +263,41 @@ class CharacterCreator extends Component {
                             </Col>
                             <Col sm={12}>
                                 <SelectField
-                                    value={this.state.character.adeptSkill}
+                                    value={this.state.character.background.adeptSkill}
                                     floatingLabelText={"Adept Skill Upgrade"}
-                                    onChange={(event, index, value) => {this.handleCharacterTraitChange("adeptSkill", value)}}>
+                                    onChange={(event, index, value) => {this.handleCharacterBackgroundChange("adeptSkill", value, 4)}}>
                                     {this.skillsMenuItemList()}
                                 </SelectField>
                             </Col>
                             <Col sm={12}>
                                 <SelectField
-                                    value={this.state.character.noviceSkill}
+                                    value={this.state.character.background.noviceSkill}
                                     floatingLabelText={"Novice Skill Upgrade"}
-                                    onChange={(event, index, value) => {this.handleCharacterTraitChange("noviceSkill", value)}}>
+                                    onChange={(event, index, value) => {this.handleCharacterBackgroundChange("noviceSkill", value, 3)}}>
                                     {this.skillsMenuItemList()}
                                 </SelectField>
                             </Col>
                             <Col sm={12}>
                                 <SelectField
-                                    value={this.state.character.patheticSkill1}
+                                    value={this.state.character.background.patheticSkill1}
                                     floatingLabelText={"Pathetic Skill 1 Downgrade"}
-                                    onChange={(event, index, value) => {this.handleCharacterTraitChange("patheticSkill1", value)}}>
+                                    onChange={(event, index, value) => {this.handleCharacterBackgroundChange("patheticSkill1", value, 1)}}>
                                     {this.skillsMenuItemList()}
                                 </SelectField>
                             </Col>
                             <Col sm={12}>
                                 <SelectField
-                                    value={this.state.character.patheticSkill2}
+                                    value={this.state.character.background.patheticSkill2}
                                     floatingLabelText={"Pathetic Skill 2 Downgrade"}
-                                    onChange={(event, index, value) => {this.handleCharacterTraitChange("patheticSkill2", value)}}>
+                                    onChange={(event, index, value) => {this.handleCharacterBackgroundChange("patheticSkill2", value, 1)}}>
                                     {this.skillsMenuItemList()}
                                 </SelectField>
                             </Col>
                             <Col sm={12}>
                                 <SelectField
-                                    value={this.state.character.patheticSkill3}
+                                    value={this.state.character.background.patheticSkill3}
                                     floatingLabelText={"Pathetic Skill 3 Downgrade"}
-                                    onChange={(event, index, value) => {this.handleCharacterTraitChange("patheticSkill3", value)}}>
+                                    onChange={(event, index, value) => {this.handleCharacterBackgroundChange("patheticSkill3", value, 1)}}>
                                     {this.skillsMenuItemList()}
                                 </SelectField>
                             </Col>
