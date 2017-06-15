@@ -5,9 +5,7 @@ import {Stepper, Step, StepButton} from 'material-ui';
 import {RaisedButton} from 'material-ui';
 import {Paper} from 'material-ui';
 import CombatStatAssigner from './CombatStatAssigner';
-// import camelCase from 'camelcase';
-import decamelize from 'decamelize';
-import toTitleCase from 'to-title-case';
+import BackgroundMaker from './BackgroundMaker';
 
 const titlePaperStyle = {
     padding: "10px",
@@ -18,7 +16,6 @@ const titlePaperStyle = {
 const stepperPaperStyle = {
     padding: "10px",
     display: "flex",
-    // flexDirection: "column",
     marginRight: "1rem",
 };
 
@@ -88,14 +85,6 @@ class CharacterCreator extends Component {
         };
     }
 
-    skillsMenuItemList = () => {
-        return Object.keys(this.state.character.skills).map((skill) => {
-            const skillText = toTitleCase(decamelize(skill, " "));
-            const isDisabled = Object.values(this.state.character.background).includes(skill);
-            return (<MenuItem key={skill} value={skill} primaryText={skillText} disabled={isDisabled} />);
-        });
-    };
-
     handleNext = () => {
         this.setState({
             ...this.state,
@@ -139,27 +128,6 @@ class CharacterCreator extends Component {
                 }
             }
         });
-    };
-
-    handleCharacterStatClick = (stat, delta) => {
-        const baseStatValue = this.state.baseStats[stat];
-        const currentStatValue = this.state.character.stats[stat];
-        const newStatValue = currentStatValue + delta;
-        if (newStatValue >= baseStatValue &&
-            newStatValue <= baseStatValue + this.state.maxStateChange &&
-            this.state.character.statPoints - delta >= 0) {
-            this.setState({
-                ...this.state,
-                character: {
-                    ...this.state.character,
-                    stats: {
-                        ...this.state.character.stats,
-                        [stat]: newStatValue,
-                    },
-                    statPoints: this.state.character.statPoints - delta,
-                }
-            });
-        }
     };
 
     handleCharacterStatChange = (stat, delta) => {
@@ -216,7 +184,7 @@ class CharacterCreator extends Component {
                                 <TextField
                                     floatingLabelText="Height"
                                     value={this.state.character.height}
-                                    onChange={(event, index, value) => {
+                                    onChange={(event) => {
                                         this.handleCharacterTraitChange("height", event.target.value)
                                     }}
                                 />
@@ -225,7 +193,7 @@ class CharacterCreator extends Component {
                                 <TextField
                                     floatingLabelText="Weight"
                                     value={this.state.character.weight}
-                                    onChange={(event, index, value) => {
+                                    onChange={(event) => {
                                         this.handleCharacterTraitChange("weight", event.target.value)
                                     }}
                                 />
@@ -235,7 +203,7 @@ class CharacterCreator extends Component {
                                     floatingLabelText="Description"
                                     value={this.state.character.description}
                                     multiLine={true}
-                                    onChange={(event, index, value) => {
+                                    onChange={(event) => {
                                         this.handleCharacterTraitChange("description", event.target.value)
                                     }}
                                 />
@@ -254,53 +222,9 @@ class CharacterCreator extends Component {
                 );
             case 1:
                 return (
-                    <div>
-                        <Row>
-                            <Col sm={12}>
-                                <h3>Choose Skills</h3>
-                            </Col>
-                            <Col sm={12}>
-                                <SelectField
-                                    value={this.state.character.background.adeptSkill}
-                                    floatingLabelText={"Adept Skill Upgrade"}
-                                    onChange={(event, index, value) => {this.handleCharacterBackgroundChange("adeptSkill", value, 4)}}>
-                                    {this.skillsMenuItemList()}
-                                </SelectField>
-                            </Col>
-                            <Col sm={12}>
-                                <SelectField
-                                    value={this.state.character.background.noviceSkill}
-                                    floatingLabelText={"Novice Skill Upgrade"}
-                                    onChange={(event, index, value) => {this.handleCharacterBackgroundChange("noviceSkill", value, 3)}}>
-                                    {this.skillsMenuItemList()}
-                                </SelectField>
-                            </Col>
-                            <Col sm={12}>
-                                <SelectField
-                                    value={this.state.character.background.patheticSkill1}
-                                    floatingLabelText={"Pathetic Skill 1 Downgrade"}
-                                    onChange={(event, index, value) => {this.handleCharacterBackgroundChange("patheticSkill1", value, 1)}}>
-                                    {this.skillsMenuItemList()}
-                                </SelectField>
-                            </Col>
-                            <Col sm={12}>
-                                <SelectField
-                                    value={this.state.character.background.patheticSkill2}
-                                    floatingLabelText={"Pathetic Skill 2 Downgrade"}
-                                    onChange={(event, index, value) => {this.handleCharacterBackgroundChange("patheticSkill2", value, 1)}}>
-                                    {this.skillsMenuItemList()}
-                                </SelectField>
-                            </Col>
-                            <Col sm={12}>
-                                <SelectField
-                                    value={this.state.character.background.patheticSkill3}
-                                    floatingLabelText={"Pathetic Skill 3 Downgrade"}
-                                    onChange={(event, index, value) => {this.handleCharacterBackgroundChange("patheticSkill3", value, 1)}}>
-                                    {this.skillsMenuItemList()}
-                                </SelectField>
-                            </Col>
-                        </Row>
-                    </div>
+                    <BackgroundMaker
+                        handleSelect={(buff, skill, newValue) => this.handleCharacterBackgroundChange(buff, skill, newValue)}
+                        character={this.state.character}/>
                 );
             case 2:
                 return (
