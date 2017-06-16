@@ -77,7 +77,9 @@ function getThrowRange(athletics) {
 }
 
 function getSize(weight) {
-    if (weight <= 55) {
+    if (weight <= 25) {
+
+    } else if (weight <= 55) {
         return 2;
     } else if(weight <= 110) {
         return 3;

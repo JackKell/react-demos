@@ -31,7 +31,7 @@ const CharacterInfoInput = (props) =>  {
                     <TextField
                         floatingLabelText="Height"
                         value={props.character.height}
-                        onChange={(event, index, value) => {
+                        onChange={(event) => {
                             props.onChange("height", event.target.value)
                         }}/>
                 </Col>
@@ -39,7 +39,7 @@ const CharacterInfoInput = (props) =>  {
                     <TextField
                         floatingLabelText="Weight"
                         value={props.character.weight}
-                        onChange={(event, index, value) => {
+                        onChange={(event) => {
                             props.onChange("weight", event.target.value)
                         }}/>
                 </Col>
@@ -48,7 +48,7 @@ const CharacterInfoInput = (props) =>  {
                         floatingLabelText="Description"
                         value={props.character.description}
                         multiLine={true}
-                        onChange={(event, index, value) => {
+                        onChange={(event) => {
                             props.onChange("description", event.target.value)
                         }}/>
                 </Col>

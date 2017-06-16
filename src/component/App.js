@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {Nav, NavItem} from 'react-bootstrap';
-import {Row, Col, Container} from "react-grid-system";
+import {Row, Container} from "react-grid-system";
+import {Router, Route} from 'react-router';
 import PointSpender from "./PointSpender";
 import PartyBuilder from "./PartyBuilder";
 import {MuiThemeProvider, AppBar, Drawer, MenuItem, Menu} from 'material-ui';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import CharacterCreator from './CharacterCreator/CharacterCreator';
+import CharacterCreator from './CharacterCreator';
 
 injectTapEventPlugin();
 

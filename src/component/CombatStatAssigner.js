@@ -1,6 +1,6 @@
 import React from 'react';
 import {Row, Col} from 'react-grid-system';
-import UpDownCounter from '../UpDownCounter';
+import UpDownCounter from './UpDownCounter';
 import PropTypes from 'prop-types';
 import decamelize from 'decamelize';
 import toTitleCase from 'to-title-case';
