@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Row, Col} from 'react-grid-system';
-import {Stepper, Step, StepButton} from 'material-ui';
 import {RaisedButton} from 'material-ui';
 import {Paper} from 'material-ui';
 import CombatStatAssigner from './CombatStatAssigner';
