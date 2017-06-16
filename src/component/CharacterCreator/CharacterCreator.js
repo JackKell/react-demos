@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {Row, Col} from 'react-grid-system';
-import {TextField, SelectField, MenuItem} from 'material-ui';
 import {Stepper, Step, StepButton} from 'material-ui';
 import {RaisedButton} from 'material-ui';
 import {Paper} from 'material-ui';
 import CombatStatAssigner from './CombatStatAssigner';
-import BackgroundMaker from './BackgroundMaker';
+import CharacterBackgroundMaker from './CharacterBackgroundMaker';
+import CharacterInfoInput from './CharacterInfoInput';
+import SimpleStepper from './SimpleStepper';
 
 const titlePaperStyle = {
     padding: "10px",
@@ -28,6 +29,16 @@ class CharacterCreator extends Component {
         super();
         this.state = {
             stepIndex: 4,
+            steps: [
+                "Character Information",
+                "Choose Skills",
+                "Choose Edges",
+                "Choose Features",
+                "Assign Combat Stats",
+                "Create Basic Descriptions",
+                "Choose A Starter",
+                "Choose Staring Items",
+            ],
             baseStats: {
                 hp: 10,
                 attack: 5,
@@ -84,6 +95,20 @@ class CharacterCreator extends Component {
             },
         };
     }
+
+    handleSetStep = (value) => {
+        this.setState({
+            ...this.state,
+            stepIndex: this.state.stepIndex + 1
+        });
+    };
+
+    handleChangeStep = (delta) => {
+        this.setState({
+            ...this.state,
+            stepIndex: this.state.stepIndex + 1
+        });
+    };
 
     handleNext = () => {
         this.setState({
@@ -156,74 +181,14 @@ class CharacterCreator extends Component {
         switch (stepIndex) {
             case 0:
                 return (
-                    <div>
-                        <Row>
-                            <Col sm={12}>
-                                <h3>Character Information</h3>
-                            </Col>
-                            <Col sm={6}>
-                                <TextField
-                                    floatingLabelText="Name"
-                                    value={this.state.character.name}
-                                    onChange={(event) => {
-                                        this.handleCharacterTraitChange("name", event.target.value)
-                                    }}
-                                />
-                            </Col>
-                            <Col sm={6}>
-                                <TextField
-                                    floatingLabelText="Age"
-                                    value={this.state.character.age}
-                                    onChange={(event) => {
-                                        this.handleCharacterTraitChange("age", event.target.value)
-                                    }}
-                                />
-                            </Col>
-
-                            <Col sm={6}>
-                                <TextField
-                                    floatingLabelText="Height"
-                                    value={this.state.character.height}
-                                    onChange={(event) => {
-                                        this.handleCharacterTraitChange("height", event.target.value)
-                                    }}
-                                />
-                            </Col>
-                            <Col sm={6}>
-                                <TextField
-                                    floatingLabelText="Weight"
-                                    value={this.state.character.weight}
-                                    onChange={(event) => {
-                                        this.handleCharacterTraitChange("weight", event.target.value)
-                                    }}
-                                />
-                            </Col>
-                            <Col sm={6}>
-                                <TextField
-                                    floatingLabelText="Description"
-                                    value={this.state.character.description}
-                                    multiLine={true}
-                                    onChange={(event) => {
-                                        this.handleCharacterTraitChange("description", event.target.value)
-                                    }}
-                                />
-                            </Col>
-                            <Col sm={6}>
-                                <SelectField
-                                    value={this.state.character.gender}
-                                    floatingLabelText={"Gender"}
-                                    onChange={(event, index, value) => {this.handleCharacterTraitChange("gender", value)}}>
-                                    <MenuItem value={"male"} primaryText="Male"/>
-                                    <MenuItem value={"female"} primaryText="Female"/>
-                                </SelectField>
-                            </Col>
-                        </Row>
-                    </div>
+                    <CharacterInfoInput
+                        character={this.state.character}
+                        onChange={(trait, value) => this.handleCharacterTraitChange(trait, value)}/>
                 );
             case 1:
                 return (
-                    <BackgroundMaker
-                        handleSelect={(buff, skill, newValue) => this.handleCharacterBackgroundChange(buff, skill, newValue)}
+                    <CharacterBackgroundMaker
+                        handleChange={(buff, skill, newValue) => this.handleCharacterBackgroundChange(buff, skill, newValue)}
                         character={this.state.character}/>
                 );
             case 2:
@@ -284,8 +249,6 @@ class CharacterCreator extends Component {
     }
 
     render() {
-        const {stepIndex} = this.state;
-
         return (
             <div className="charactercreator">
                 <Row>
@@ -294,63 +257,25 @@ class CharacterCreator extends Component {
                 <Row>
                     <Col sm={4}>
                         <Paper style={stepperPaperStyle}>
-                            <Stepper linear={false} activeStep={stepIndex} orientation={"vertical"}>
-                                <Step>
-                                    <StepButton onClick={() => this.setState({stepIndex: 0})}>
-                                        Character Information
-                                    </StepButton>
-                                </Step>
-                                <Step>
-                                    <StepButton onClick={() => this.setState({stepIndex: 1})}>
-                                        Choose Skills
-                                    </StepButton>
-                                </Step>
-                                <Step>
-                                    <StepButton onClick={() => this.setState({stepIndex: 2})}>
-                                        Choose Edges
-                                    </StepButton>
-                                </Step>
-                                <Step>
-                                    <StepButton onClick={() => this.setState({stepIndex: 3})}>
-                                        Choose Features
-                                    </StepButton>
-                                </Step>
-                                <Step>
-                                    <StepButton onClick={() => this.setState({stepIndex: 4})}>
-                                        Assign Combat Stats
-                                    </StepButton>
-                                </Step>
-                                <Step>
-                                    <StepButton onClick={() => this.setState({stepIndex: 5})}>
-                                        Create Basic Descriptions
-                                    </StepButton>
-                                </Step>
-                                <Step>
-                                    <StepButton onClick={() => this.setState({stepIndex: 6})}>
-                                        Choose A Starter
-                                    </StepButton>
-                                </Step>
-                                <Step>
-                                    <StepButton onClick={() => this.setState({stepIndex: 7})}>
-                                        Choose Staring Items
-                                    </StepButton>
-                                </Step>
-                            </Stepper>
+                            <SimpleStepper
+                                steps= {this.state.steps}
+                                handleClick={(stepIndex) => this.setState({stepIndex: stepIndex})}
+                                stepIndex={this.state.stepIndex}/>
                         </Paper>
                     </Col>
                     <Col sm={8}>
                         <Row>
                             <Paper style={contentPaperStyle}>
-                                <div style={{height: "600px"}}>
-                                    {this.getStepContent(stepIndex)}
+                                <div style={{height: "950px"}}>
+                                    {this.getStepContent(this.state.stepIndex)}
                                 </div>
                                 <RaisedButton
                                     label={"Back"}
-                                    disabled={stepIndex === 0}
+                                    disabled={this.state.stepIndex === 0}
                                     onTouchTap={this.handlePrev}/>
                                 <RaisedButton
                                     label={"Next"}
-                                    disabled={stepIndex === 7}
+                                    disabled={this.state.stepIndex === this.state.steps.length - 1}
                                     onTouchTap={this.handleNext}/>
                             </Paper>
                         </Row>

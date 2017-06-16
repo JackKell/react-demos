@@ -9,13 +9,12 @@ import CharacterStatViewer from './CharacterStatViewer';
 const CombatStatAssigner = (props) => {
     const getUpDownCounters = () => {
         return Object.keys(props.character.stats).map((stat) => {
-            const statText = toTitleCase(decamelize(stat, " "));
             return (
                 <Col key={stat} sm={6}>
                     <UpDownCounter
                         handleDownClick={() => props.handleClick(stat, -1)}
                         handleUpClick={() => props.handleClick(stat, 1)}
-                        name={statText}
+                        name={toTitleCase(decamelize(stat, " "))}
                         value={props.character.stats[stat]}/>
                 </Col>
             );
