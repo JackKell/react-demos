@@ -11,16 +11,9 @@ import CharacterCreator from './CharacterCreator';
 injectTapEventPlugin();
 
 class App extends Component {
-    demoMap = [
-        <PointSpender/>,
-        <PartyBuilder/>,
-        <CharacterCreator/>,
-    ];
-
     constructor() {
         super();
         this.state = {
-            content: this.demoMap[2],
             open: false,
         };
     }
@@ -29,13 +22,6 @@ class App extends Component {
         this.setState({
             ...this.state,
             open: !this.state.open,
-        })
-    };
-
-    setContent = (index) => {
-        this.setState({
-            ...this.state,
-            content: this.demoMap[index],
         })
     };
 
