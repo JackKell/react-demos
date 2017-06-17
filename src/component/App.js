@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Row, Container} from "react-grid-system";
-import {Router, Route} from 'react-router';
+import {BrowserRouter, Switch, Route, NavLink} from 'react-router-dom';
+import {createBrowserHistory} from 'history';
 import PointSpender from "./PointSpender";
 import PartyBuilder from "./PartyBuilder";
 import {MuiThemeProvider, AppBar, Drawer, MenuItem, Menu} from 'material-ui';
@@ -12,7 +13,7 @@ injectTapEventPlugin();
 class App extends Component {
     demoMap = [
         <PointSpender/>,
-        <PartyBuilder maxPartySize={3}/>,
+        <PartyBuilder/>,
         <CharacterCreator/>,
     ];
 
@@ -23,13 +24,6 @@ class App extends Component {
             open: false,
         };
     }
-
-    handleClick = (selectedKey) => {
-        this.setState({
-            ...this.state,
-            content: this.demoMap[selectedKey],
-        });
-    };
 
     handleToggleDrawer = () => {
         this.setState({
@@ -47,32 +41,43 @@ class App extends Component {
 
     render() {
         return (
-            <div className="App">
-                <MuiThemeProvider>
-                    <div>
-                        <AppBar
-                            title={<h1>React Demos</h1>}
-                            onLeftIconButtonTouchTap={() => this.handleToggleDrawer()}/>
-                        <Drawer docked={false} open={this.state.open} onRequestChange={() => this.handleToggleDrawer()}>
+            <BrowserRouter history={createBrowserHistory()}>
+                <div className="App">
+                    <MuiThemeProvider>
+                        <div>
                             <AppBar
-                                style={{cursor: "pointer"}}
-                                title={"Demos"}
-                                showMenuIconButton={false}
-                                onTitleTouchTap={() => this.handleToggleDrawer()}/>
-                            <Menu>
-                                <MenuItem onTouchTap={() => this.setContent(0)}>Point Spender</MenuItem>
-                                <MenuItem onTouchTap={() => this.setContent(1)}>Party Builder</MenuItem>
-                                <MenuItem onTouchTap={() => this.setContent(2)}>Character Creator</MenuItem>
-                            </Menu>
-                        </Drawer>
-                        <Container>
-                            <Row>
-                                {this.state.content}
-                            </Row>
-                        </Container>
-                    </div>
-                </MuiThemeProvider>
-            </div>
+                                title={<h1>React Demos</h1>}
+
+                                onLeftIconButtonTouchTap={() => this.handleToggleDrawer()}/>
+                            <Drawer docked={false} open={this.state.open} onRequestChange={() => this.handleToggleDrawer()}>
+                                <AppBar
+                                    style={{cursor: "pointer"}}
+                                    title={"Demos"}
+                                    showMenuIconButton={false}
+                                    onTitleTouchTap={() => this.handleToggleDrawer()}/>
+                                <Menu>
+                                    <NavLink to="/point-spender"><MenuItem>Point Spender</MenuItem></NavLink>
+                                    <NavLink to="/party-builder"><MenuItem>Party Builder</MenuItem></NavLink>
+                                    <NavLink to="/character-creator"><MenuItem>Character Creator</MenuItem></NavLink>
+                                </Menu>
+                            </Drawer>
+                            <Container>
+                                <Row>
+                                    <Switch>
+                                        <Route exact path={"/"} component={() => (<PointSpender/>)}/>
+                                        <Route path={"/point-spender"} component={PointSpender}/>
+                                        <Route path={"/party-builder"} component={PartyBuilder}/>
+                                        <Route path={"/character-creator"} component={CharacterCreator}/>
+                                        <Route render={function () {
+                                            return <h1>No Page Found</h1>
+                                        }}/>
+                                    </Switch>
+                                </Row>
+                            </Container>
+                        </div>
+                    </MuiThemeProvider>
+                </div>
+            </BrowserRouter>
         );
     }
 }

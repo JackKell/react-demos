@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Stepper, Step, StepButton} from 'material-ui';
 import toTitleCase from 'to-title-case';
+import camelize from 'camelcase';
+import decamelize from 'decamelize';
+import {Link} from 'react-router-dom'
 
 const SimpleStepper = (props) => {
     const getSteps = () => {
@@ -9,7 +12,7 @@ const SimpleStepper = (props) => {
             return (
                 <Step key={step}>
                     <StepButton onClick={() => props.handleClick(props.steps.indexOf(step))}>
-                        {toTitleCase(step)}
+                        <Link to>{toTitleCase(step)}</Link>
                     </StepButton>
                 </Step>
             );

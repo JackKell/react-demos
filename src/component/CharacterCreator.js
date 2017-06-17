@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import {Row, Col} from 'react-grid-system';
-import {RaisedButton} from 'material-ui';
+import {RaisedButton, Step, StepButton, Stepper} from 'material-ui';
 import {Paper} from 'material-ui';
 import CombatStatAssigner from './CombatStatAssigner';
 import CharacterBackgroundMaker from './CharacterBackgroundMaker';
 import CharacterInfoInput from './CharacterInfoInput';
-import SimpleStepper from './SimpleStepper';
+import toTitleCase from 'to-title-case';
+import camelize from 'camelcase';
+import decamelize from 'decamelize';
+import PointSpender from "./PointSpender";
 
 const titlePaperStyle = {
     padding: "10px",
@@ -24,10 +28,10 @@ const contentPaperStyle = {
 };
 
 class CharacterCreator extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            stepIndex: 4,
+            stepIndex: 0,
             steps: [
                 "Character Information",
                 "Choose Skills",
@@ -105,8 +109,9 @@ class CharacterCreator extends Component {
     handleChangeStep = (delta) => {
         this.setState({
             ...this.state,
-            stepIndex: this.state.stepIndex + 1
+            stepIndex: this.state.stepIndex + delta
         });
+        this.props.history.push(this.props.match.url + "/" + decamelize(camelize(this.state.steps[(this.state.stepIndex)]), "-"));
     };
 
     handleNext = () => {
@@ -114,6 +119,7 @@ class CharacterCreator extends Component {
             ...this.state,
             stepIndex: this.state.stepIndex + 1
         });
+        this.props.history.push(this.props.match.url + "/" + decamelize(camelize(this.state.steps[(this.state.stepIndex)]), "-"));
     };
 
     handlePrev = () => {
@@ -121,6 +127,7 @@ class CharacterCreator extends Component {
             ...this.state,
             stepIndex: this.state.stepIndex - 1
         });
+        this.props.history.push(this.props.match.url + "/" + decamelize(camelize(this.state.steps[(this.state.stepIndex)]), "-"));
     };
 
     handleCharacterTraitChange = (trait, newValue) => {
@@ -173,6 +180,29 @@ class CharacterCreator extends Component {
                 }
             });
         }
+    };
+
+    handleStepClick = (step, location) => {
+        this.setState({
+            ...this.state,
+            stepIndex: this.state.steps.indexOf(step),
+        });
+        this.props.history.push(location);
+    };
+
+    getSteps = () => {
+        return this.state.steps.map((step) => {
+            const stepKey = camelize(step);
+            const stepLink = decamelize(camelize(step), "-");
+            const stepText = toTitleCase(step);
+            return (
+                <Step key={stepKey}>
+                    <StepButton onClick={() => this.handleStepClick(step, this.props.match.url + "/" + stepLink)}>
+                        {stepText}
+                    </StepButton>
+                </Step>
+            );
+        });
     };
 
     // TODO: Make each step's content into a component
@@ -256,26 +286,81 @@ class CharacterCreator extends Component {
                 <Row>
                     <Col sm={4}>
                         <Paper style={stepperPaperStyle}>
-                            <SimpleStepper
-                                steps= {this.state.steps}
-                                handleClick={(stepIndex) => this.setState({stepIndex: stepIndex})}
-                                stepIndex={this.state.stepIndex}/>
+                            <Stepper linear={false} activeStep={this.state.stepIndex} orientation={"vertical"}>
+                                {this.getSteps()}
+                            </Stepper>
                         </Paper>
                     </Col>
                     <Col sm={8}>
                         <Row>
                             <Paper style={contentPaperStyle}>
-                                <div style={{height: "950px"}}>
-                                    {this.getStepContent(this.state.stepIndex)}
+                                <div style={{height: "550px"}}>
+                                    <Switch>
+                                        <Route exact path={this.props.match.url + "/"} component={() => {return (
+                                            <CharacterInfoInput
+                                                character={this.state.character}
+                                                onChange={(trait, value) => this.handleCharacterTraitChange(trait, value)}
+                                            />);}}/>
+                                        <Route path={this.props.match.url + "/character-information"} component={() => {return (
+                                            <CharacterInfoInput
+                                                character={this.state.character}
+                                                onChange={(trait, value) => this.handleCharacterTraitChange(trait, value)}
+                                            />);}}/>
+                                        <Route path={this.props.match.url + "/choose-skills"} component={() => {return (
+                                            <CharacterBackgroundMaker
+                                                handleChange={(buff, skill, newValue) => this.handleCharacterBackgroundChange(buff, skill, newValue)}
+                                                character={this.state.character}/>);}}/>
+                                        <Route path={this.props.match.url + "/choose-edges"} component={() => {return (
+                                            <div>
+                                                <Row>
+                                                    <Col sm={12}>
+                                                        <h3>Choose Edges</h3>
+                                                    </Col>
+                                                    <Col sm={12}>
+                                                        <p>Coming soon</p>
+                                                    </Col>
+                                                </Row>
+                                            </div>);}}/>
+                                        <Route path={this.props.match.url + "/choose-features"} component={() => {return (
+                                            <div>
+                                                <Row>
+                                                    <Col sm={12}>
+                                                        <h3>Choose Features</h3>
+                                                    </Col>
+                                                    <Col sm={12}>
+                                                        <p>Coming soon</p>
+                                                    </Col>
+                                                </Row>
+                                            </div>);}}/>
+                                        <Route path={this.props.match.url + "/assign-combat-stats"} component={() => {return (
+                                            <CombatStatAssigner
+                                                character={this.state.character}
+                                                handleClick={(stat, delta) => this.handleCharacterStatChange(stat, delta)}/>);}}/>
+                                        <Route path={this.props.match.url + "/create-basic-descriptions"} component={() => {return (
+                                            <div>
+                                                <h3>Create Basic Description</h3>
+                                                coming soon
+                                            </div>);}}/>
+                                        <Route path={this.props.match.url + "/choose-a-starter"} component={() => {return (
+                                            <div>
+                                                <h3>Choose A Starter</h3>
+                                                coming soon
+                                            </div>);}}/>
+                                        <Route path={this.props.match.url + "/choose-staring-items"} component={() => {return (
+                                            <div>
+                                                <h3>Choose Starting Items</h3>
+                                                coming soon
+                                            </div>);}}/>
+                                        <Redirect to={this.props.match.url}/>
+                                    </Switch>
                                 </div>
+                                <h4>Warning these buttons are broken currently (T_T)</h4>
                                 <RaisedButton
                                     label={"Back"}
-                                    disabled={this.state.stepIndex === 0}
-                                    onTouchTap={this.handlePrev}/>
+                                    disabled={this.state.stepIndex === 0}/>
                                 <RaisedButton
                                     label={"Next"}
-                                    disabled={this.state.stepIndex === this.state.steps.length - 1}
-                                    onTouchTap={this.handleNext}/>
+                                    disabled={this.state.stepIndex === this.state.steps.length - 1}/>
                             </Paper>
                         </Row>
                     </Col>

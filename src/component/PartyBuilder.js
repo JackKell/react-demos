@@ -112,7 +112,11 @@ class PartyBuilder extends Component {
 }
 
 PartyBuilder.propTypes = {
-    maxPartySize: PropTypes.number.isRequired,
+    maxPartySize: PropTypes.number,
+};
+
+PartyBuilder.defaultProps = {
+    maxPartySize: 3,
 };
 
 export default PartyBuilder;

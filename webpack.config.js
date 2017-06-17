@@ -1,10 +1,11 @@
+// TODO: Write a good webpack config. These does nothing right now. It is all react-scripts currently
+
 const debug = process.env.NODE_ENV !== "production";
 const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-    context: path.join(__dirname, "src"),
-    devtool: debug ? "inline-sourcemap" : null,
+    devtool: debug ? "inline-source-map" : null,
     entry: "./index.js",
     module: {
         loaders: [
