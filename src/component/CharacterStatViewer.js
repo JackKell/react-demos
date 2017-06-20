@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Utility from './utility';
+import Utility from '../utility';
 
 const CharacterStatViewer = (props) => {
     return (

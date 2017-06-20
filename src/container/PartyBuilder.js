@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Row, Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import PartyMemberList from './PartyMemberList'
+import PartyMemberList from '../component/PartyMemberList'
 
 const warrior = {
     id: 1,

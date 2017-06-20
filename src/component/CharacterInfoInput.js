@@ -14,49 +14,39 @@ const CharacterInfoInput = (props) =>  {
                     <TextField
                         floatingLabelText="Name"
                         value={props.character.name}
-                        onChange={(event) => {
-                            props.onChange("name", event.target.value)
-                        }}/>
+                        onChange={(event) => props.onChange("name", event.target.value)}/>
                 </Col>
                 <Col sm={6}>
                     <TextField
                         floatingLabelText="Age"
                         value={props.character.age}
-                        onChange={(event) => {
-                            props.onChange("age", event.target.value)
-                        }}/>
+                        onChange={(event) => props.onChange("age", event.target.value)}/>
                 </Col>
 
                 <Col sm={6}>
                     <TextField
                         floatingLabelText="Height"
                         value={props.character.height}
-                        onChange={(event) => {
-                            props.onChange("height", event.target.value)
-                        }}/>
+                        onChange={(event) => props.onChange("height", event.target.value)}/>
                 </Col>
                 <Col sm={6}>
                     <TextField
                         floatingLabelText="Weight"
                         value={props.character.weight}
-                        onChange={(event) => {
-                            props.onChange("weight", event.target.value)
-                        }}/>
+                        onChange={(event) => props.onChange("weight", event.target.value)}/>
                 </Col>
                 <Col sm={6}>
                     <TextField
                         floatingLabelText="Description"
                         value={props.character.description}
                         multiLine={true}
-                        onChange={(event) => {
-                            props.onChange("description", event.target.value)
-                        }}/>
+                        onChange={(event) => props.onChange("description", event.target.value)}/>
                 </Col>
                 <Col sm={6}>
                     <SelectField
                         value={props.character.gender}
                         floatingLabelText={"Gender"}
-                        onChange={(event, index, value) => {props.onChange("gender", value)}}>
+                        onChange={(event, index, value) => props.onChange("gender", value)}>
                         <MenuItem value={"male"} primaryText="Male"/>
                         <MenuItem value={"female"} primaryText="Female"/>
                         <MenuItem value={"none"} primaryText="None"/>

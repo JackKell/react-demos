@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Row, Col} from 'react-bootstrap';
-import UpDownCounter from './UpDownCounter';
+import UpDownCounter from '../component/UpDownCounter';
 import toTitleCase from 'to-title-case';
 
 class PointSpender extends Component {
