@@ -22,7 +22,6 @@ const CharacterInfoInput = (props) =>  {
                         value={props.character.age}
                         onChange={(event) => props.onChange("age", event.target.value)}/>
                 </Col>
-
                 <Col sm={6}>
                     <TextField
                         floatingLabelText="Height"
@@ -57,6 +56,7 @@ const CharacterInfoInput = (props) =>  {
     );
 };
 
+//noinspection JSUnresolvedVariable
 CharacterInfoInput.propTypes = {
     onChange: PropTypes.func.isRequired,
     character: PropTypes.object.isRequired,

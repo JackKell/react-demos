@@ -1,7 +1,7 @@
 const CHARACTER_CREATOR = "CHARACTER_CREATOR::";
 
 function getCharacterCreatorAction(actionName) {
-    return CHARACTER_CREATOR + actionName
+    return CHARACTER_CREATOR + actionName;
 }
 
 export const SET_STEP = getCharacterCreatorAction("SET_STEP");

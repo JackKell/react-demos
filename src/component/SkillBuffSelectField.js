@@ -6,11 +6,15 @@ import {MenuItem, SelectField} from 'material-ui';
 
 const SkillBuffSelectField = (props) => {
     const skillsMenuItemList = () => {
-        return Object.keys(props.character.skills).map((skill) => {
+        const menuItems = Object.keys(props.character.skills).map((skill) => {
             const skillText = toTitleCase(decamelize(skill, " "));
             const isDisabled = Object.values(props.character.background).includes(skill);
             return (<MenuItem key={skill} value={skill} primaryText={skillText} disabled={isDisabled} />);
         });
+
+        menuItems.push(<MenuItem key={""} value={""} primaryText={""} disabled={false} />);
+
+        return menuItems;
     };
 
     return (

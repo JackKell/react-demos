@@ -52,7 +52,7 @@ class App extends Component {
                         <Container>
                             <Row>
                                 <Switch>
-                                    <Route exact path={"/"} component={() => (<PointSpender/>)}/>
+                                    <Route exact path={"/"} component={PointSpender}/>
                                     <Route path={"/point-spender"} component={PointSpender}/>
                                     <Route path={"/party-builder"} component={PartyBuilder}/>
                                     <Route path={"/character-creator"} component={CharacterCreator}/>

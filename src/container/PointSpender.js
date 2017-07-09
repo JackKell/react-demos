@@ -2,47 +2,30 @@ import React, {Component} from 'react';
 import {Row, Col} from 'react-bootstrap';
 import UpDownCounter from '../component/UpDownCounter';
 import toTitleCase from 'to-title-case';
+import {connect} from "react-redux";
+import {changeSkill} from '../action/PointSpender.action';
 
 class PointSpender extends Component {
-    constructor() {
-        super();
-        this.state = {
-            points: 20,
-            skills: {
-                strength: 0,
-                dexterity: 0,
-                intelligence: 0,
-                health: 0,
-            },
-            minStat: -5,
-        };
-    }
-
-    handleClick = (valueToChange, delta) => {
-        if (this.state.points - delta >= 0) {
-            if (this.state.skills[valueToChange] + delta >= this.state.minStat) {
-                this.setState({
-                    ...this.state,
-                    points: this.state.points - delta,
-                    skills: {
-                        ...this.state.skills,
-                        [valueToChange]: this.state.skills[valueToChange] + delta,
-                    },
-                });
+    validateSkillChange = (skill, delta) => {
+        const pointsAvailable = this.props.points - delta >= 0;
+        if (pointsAvailable) {
+            const newSkillValue = this.props.skills[skill] + delta;
+            if (newSkillValue >= this.props.minStat && newSkillValue <= this.props.maxStat) {
+                this.props.handleClick(skill, delta)
             }
         }
     };
 
-    getUpDownCounterList = () => {
-        return Object.keys(this.state.skills).map((skill) => {
+    getUpDownCounters = () => {
+        return Object.keys(this.props.skills).map((skill) => {
             return (
                 <div key={skill}>
                     <Col sm={6}>
                         <UpDownCounter
                             name={toTitleCase(skill)}
-                            value={this.state.skills[skill]}
-                            handleUpClick={() => this.handleClick(skill, 1)}
-                            handleDownClick={() => this.handleClick(skill, -1)}/>
+                            value={this.props.skills[skill]}
+                            handleUpClick={() => this.validateSkillChange(skill, 1)}
+                            handleDownClick={() => this.validateSkillChange(skill, -1)}/>
                     </Col>
                 </div>
             );
@@ -53,14 +36,31 @@ class PointSpender extends Component {
         return (
             <div className="pointspender">
                 <Row>
-                    <h1>Points To Spend: {this.state.points}</h1>
+                    <h1>Points To Spend: {this.props.points}</h1>
                 </Row>
                 <Row>
-                    {this.getUpDownCounterList()}
+                    {this.getUpDownCounters()}
                 </Row>
             </div>
         );
     }
 }
 
-export default PointSpender;
+const mapStateToProps = (state) => {
+    return {
+        points: state.pointSpender.points,
+        skills: state.pointSpender.skills,
+        minStat: state.pointSpender.minStat,
+        maxStat: state.pointSpender.maxStat,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleClick: (skill, delta) => {
+            dispatch(changeSkill(skill, delta))
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PointSpender);
