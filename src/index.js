@@ -1,20 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './container/App';
-import {BrowserRouter} from 'react-router-dom';
-import {Provider} from 'react-redux'
-import {createBrowserHistory} from 'history';
-import store from './store';
+import { ConnectedRouter, routerMiddleware} from 'react-router-redux';
+import { Provider } from 'react-redux'
+import { createBrowserHistory } from 'history';
+import { applyMiddleware, createStore } from 'redux';
+import createLogger from 'redux-logger';
+import thunk from 'redux-thunk';
+import RootReducer from './reducer/RootReducer.reducer';
+import { composeWithDevTools } from 'remote-redux-devtools';
 import './index.css';
 
+const history = createBrowserHistory();
 
+const middleware = composeWithDevTools(applyMiddleware(createLogger, thunk, routerMiddleware(history)));
+
+const store = createStore(RootReducer, middleware);
 
 ReactDOM.render(
     <Provider store={store}>
-        <BrowserRouter history={createBrowserHistory()}>
+        <ConnectedRouter history={history}>
             <App />
-        </BrowserRouter>
+        </ConnectedRouter>
     </Provider>,
-    document.getElementById('root'));
+    document.getElementById('root')
+);
 
 

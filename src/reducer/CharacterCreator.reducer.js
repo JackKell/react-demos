@@ -12,6 +12,7 @@ const initialState = {
         "Choose A Starter",
         "Choose Staring Items",
     ],
+    visited: new Array(8).fill(false),
     baseStats: {
         hp: 10,
         attack: 5,
@@ -71,9 +72,15 @@ const initialState = {
 const CharacterCreatorReducer = (state = initialState, action) => {
     switch (action.type) {
         case Actions.SET_STEP:
-            return {...state, stepIndex: action.payload};
+            return {
+                ...state,
+                stepIndex: action.payload
+            };
         case Actions.CHANGE_STEP:
-            return {...state, stepIndex: state.stepIndex + action.payload};
+            return {
+                ...state,
+                stepIndex: state.stepIndex + action.payload
+            };
         case Actions.SET_TRAIT:
             return {
                 ...state,

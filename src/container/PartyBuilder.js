@@ -74,6 +74,8 @@ class PartyBuilder extends Component {
 
 PartyBuilder.propTypes = {
     maxPartySize: PropTypes.number,
+    currentPartyMembers: PropTypes.array.isRequired,
+    availablePartyMembers: PropTypes.array.isRequired,
 };
 
 PartyBuilder.defaultProps = {
