@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { Col } from 'react-grid-system';
+import { Col, Row, Container, Visible } from 'react-grid-system';
 import { RaisedButton, Step, StepButton, Stepper } from 'material-ui';
 import { Paper } from 'material-ui';
 import CombatStatAssigner from '../component/CombatStatAssigner';
@@ -8,27 +7,39 @@ import CharacterBackgroundMaker from '../component/CharacterBackgroundMaker';
 import CharacterInfoInput from '../component/CharacterInfoInput';
 import toTitleCase from 'to-title-case';
 import camelize from 'camelcase';
-import decamelize from 'decamelize';
 import { connect } from "react-redux";
 import {
-    changeSkill, changeStat, changeStep, setBackgroundBuff,
-    setSkill, setStat, setStep, setTrait
+    changeStat, changeStep, setBackgroundBuff, setStep, setTrait
 } from "../action/CharacterCreator.action";
 
-const titlePaperStyle = {
-    padding: "10px",
-    margin: "2rem",
-    display: "flex",
-};
-
-const stepperPaperStyle = {
-    padding: "10px",
-    display: "flex",
-    marginRight: "1rem",
-};
-
-const contentPaperStyle = {
-    padding: "20px",
+const styles = {
+    titlePaper: {
+        marginBottom: "20px",
+    },
+    pageTitle: {
+        padding: "0.5em",
+    },
+    contentPaper: {
+        minHeight: "830px",
+    },
+    content: {
+        padding: "20px",
+    },
+    actionButtonGroup: {
+        width: "100%",
+        textAlign: "center",
+        paddingBottom: "20px",
+    },
+    actionButton: {
+        margin: "5px",
+    },
+    wrapper: {
+        padding: "10px",
+    },
+    outerWrapper: {
+        bottom: 0,
+        position: "absolute"
+    }
 };
 
 class CharacterCreator extends Component {
@@ -47,21 +58,6 @@ class CharacterCreator extends Component {
         });
     };
 
-    renderStepActions = () => {
-        return (
-            <div>
-                <RaisedButton
-                    label={"Back"}
-                    disabled={this.props.stepIndex === 0}
-                    onTouchTap={() => this.props.handleChangeStep(-1)}/>
-                <RaisedButton
-                    label={this.props.stepIndex < this.props.steps.length  - 1? "Next": "Finish"}
-                    disabled={this.props.stepIndex === this.props.steps.length}
-                    onTouchTap={() => this.props.handleChangeStep(1)}/>
-            </div>
-        );
-    };
-
     renderStepContent = () => {
         switch(this.props.stepIndex) {
             case 0:
@@ -78,17 +74,17 @@ class CharacterCreator extends Component {
                 );
             case 2:
                 return (
-                    <div>
+                    <Col>
                         <h3>Choose Edges</h3>
                         <p>Coming soon</p>
-                    </div>
+                    </Col>
                 );
             case 3:
                 return (
-                    <div>
+                    <Col>
                         <h3>Choose Features</h3>
                         <p>Coming soon</p>
-                    </div>
+                    </Col>
                 );
             case 4:
                 return (
@@ -98,57 +94,80 @@ class CharacterCreator extends Component {
                 );
             case 5:
                 return (
-                    <div>
+                    <Col>
                         <h3>Create Basic Description</h3>
                         <p>coming soon</p>
-                    </div>
+                    </Col>
                 );
             case 6:
                 return (
-                    <div>
+                    <Col>
                         <h3>Choose A Starter</h3>
                         <p>coming soon</p>
-                    </div>
+                    </Col>
                 );
             case 7:
                 return (
-                    <div>
+                    <Col>
                         <h3>Choose Starting Items</h3>
                         <p>coming soon</p>
-                    </div>
+                    </Col>
                 );
             default:
                 return (
-                    <div>
+                    <Col>
                         <h3>Finished</h3>
                         <p>coming soon</p>
-                    </div>
+                    </Col>
                 );
         }
     };
 
     render() {
         return (
-            <div className="charactercreator">
-                <Paper style={titlePaperStyle}>
-                    <h1>Character Creator</h1>
-                </Paper>
-                <Col sm={4}>
-                    <Paper style={stepperPaperStyle}>
-                        <Stepper linear={false} activeStep={this.props.stepIndex} orientation={"vertical"}>
-                            {this.renderSteps()}
-                        </Stepper>
-                    </Paper>
-                </Col>
-                <Col sm={8}>
-                    <Paper style={contentPaperStyle}>
-                        <div style={{minHeight: "600px"}}>
-                            {this.renderStepActions()}
-                            {this.renderStepContent()}
+            <Container>
+                <Row>
+                    <Col>
+                        <Paper style={styles.titlePaper}>
+                            <h1 style={styles.pageTitle}>Character Creator</h1>
+                        </Paper>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col lg={4}>
+                        <Visible lg xl>
+                            <Paper>
+                                <Stepper linear={false} activeStep={this.props.stepIndex} orientation={"vertical"}>
+                                    {this.renderSteps()}
+                                </Stepper>
+                            </Paper>
+                        </Visible>
+                    </Col>
+                    <Col lg={8}>
+                        <Paper style={styles.contentPaper}>
+                            <Row>
+                                <div style={styles.content}>
+                                    {this.renderStepContent()}
+                                </div>
+                            </Row>
+                        </Paper>
+                        <div style={styles.wrapper}>
+                            <div style={styles.actionButtonGroup}>
+                                <RaisedButton
+                                    style={styles.actionButton}
+                                    label={"Back"}
+                                    disabled={this.props.stepIndex === 0}
+                                    onTouchTap={() => this.props.handleChangeStep(-1)}/>
+                                <RaisedButton
+                                    style={styles.actionButton}
+                                    label={this.props.stepIndex < this.props.steps.length  - 1? "Next": "Finish"}
+                                    disabled={this.props.stepIndex === this.props.steps.length}
+                                    onTouchTap={() => this.props.handleChangeStep(1)}/>
+                            </div>
                         </div>
-                    </Paper>
-                </Col>
-            </div>
+                    </Col>
+                </Row>
+            </Container>
         );
     }
 }
@@ -165,27 +184,18 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleSetTrait: (trait, value) => {
-            dispatch(setTrait(trait, value));
-        },
         handleSetStep: (step) => {
             dispatch(setStep(step));
         },
         handleChangeStep: (delta) => {
             dispatch(changeStep(delta));
         },
+        handleSetTrait: (trait, value) => {
+            dispatch(setTrait(trait, value));
+        },
         handleSetBackgroundBuff: (buff, skill, value) => {
             dispatch(setBackgroundBuff(buff, skill, value));
         },
-        // handleSetSkill: (skill, rank) => {
-        //     dispatch(setSkill(skill, rank));
-        // },
-        // handleChangeSkill: (skill, delta) => {
-        //     dispatch(changeSkill(skill, delta));
-        // },
-        // handleSetStat: (stat, value) => {
-        //     dispatch(setStat(stat, value));
-        // },
         handleChangeStat: (stat, delta) => {
             dispatch(changeStat(stat, delta));
         }

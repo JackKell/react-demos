@@ -23,22 +23,25 @@ const CombatStatAssigner = (props) => {
 
     return (
         <div>
-            <Row>
-                <Col sm={12}>
-                    <h3>Assign Combat Stats</h3>
-                </Col>
-                <Col sm={12}>
-                    <h3>Stat Points: {props.character.statPoints}</h3>
-                </Col>
-                {getUpDownCounters()}
-                <Col sm={12}>
+            <Col sm={12}>
+                <h3>Assign Combat Stats</h3>
+            </Col>
+            <Col sm={12}>
+                <h3>Stat Points: {props.character.statPoints}</h3>
+            </Col>
+            {getUpDownCounters()}
+            <Col sm={12}>
+                <Row>
+                    <hr/>
+                    <Col><h3>Results:</h3></Col>
                     <CharacterStatViewer character={props.character}/>
-                </Col>
-            </Row>
+                </Row>
+            </Col>
         </div>
     );
 };
 
+//noinspection JSUnresolvedVariable
 CombatStatAssigner.propTypes = {
     character: PropTypes.object.isRequired,
     handleClick: PropTypes.func.isRequired,

@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 
 function PartyMemberCard(props) {
     const partyMember = props.partyMember;
+    console.log(partyMember);
     return (
-        <div className="partymembercard" style={props.style}>
+        <div style={props.style}>
             <Card>
                 <CardTitle
                     title={partyMember.name}
@@ -16,13 +17,14 @@ function PartyMemberCard(props) {
                     Intelligence: {partyMember.intelligence}, Health: {partyMember.health}
                 </CardText>
                 <CardActions>
-                    <FlatButton label={props.actionLabel} onClick={props.actionOnClick}/>
+                    <FlatButton label={props.actionLabel} onClick={() => props.actionOnClick(partyMember)}/>
                 </CardActions>
             </Card>
         </div>
     );
 }
 
+//noinspection JSUnresolvedVariable
 PartyMemberCard.propTypes = {
     partyMember: PropTypes.object.isRequired,
     actionLabel: PropTypes.string.isRequired,

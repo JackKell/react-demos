@@ -2,40 +2,36 @@ import React, {Component} from 'react';
 import { Row, Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import PartyMemberList from '../component/PartyMemberList';
-import {addPartyMember, removePartyMember} from '../action/PartyBuilder.action';
-import {connect} from "react-redux";
+import { addPartyMember, removePartyMember } from '../action/PartyBuilder.action';
+import { connect } from "react-redux";
+import PartyMemberCard from "../component/PartyMemberCard";
+
+const styles = {
+    cardStyle: {
+        paddingBottom: "2rem",
+    },
+};
 
 class PartyBuilder extends Component {
-    // removeFromParty = (partyMember) => {
-    //     let index = this.state.currentPartyMembers.indexOf(partyMember);
-    //     let newCurrentPartyMembers = this.state.currentPartyMembers;
-    //     newCurrentPartyMembers.splice(index, 1);
-    //     let newAvailablePartyMembers = this.state.availablePartyMembers;
-    //     newAvailablePartyMembers.push(partyMember);
-    //     this.setState({
-    //         currentPartyMembers: newCurrentPartyMembers,
-    //         availablePartyMembers: newAvailablePartyMembers,
-    //     });
-    // };
+    renderPartyMemberCards = (partyMembers, actionOnClick, actionLabel) => {
+        console.log(partyMembers);
+        const a = partyMembers.map((partyMember) => {
+            return (
+                <PartyMemberCard
+                    style={styles.cardStyle}
+                    key={partyMember.id.toString()}
+                    partyMember={partyMember}
+                    actionOnClick={actionOnClick}
+                    actionLabel={actionLabel}
+                />
+            );
+        });
+        return a;
+    };
 
     removeFromParty = (partyMember) => {
         this.props.handleRemovePartyMember(partyMember);
     };
-
-    // addToParty = (partyMember) => {
-    //     if (this.state.currentPartyMembers.length + 1 <= this.props.maxPartySize) {
-    //         let index = this.state.availablePartyMembers.indexOf(partyMember);
-    //         let newAvailablePartyMembers = this.state.availablePartyMembers;
-    //         newAvailablePartyMembers.splice(index, 1);
-    //         let newCurrentPartyMembers = this.state.currentPartyMembers;
-    //         newCurrentPartyMembers.push(partyMember);
-    //
-    //         this.setState({
-    //             currentPartyMembers: newCurrentPartyMembers,
-    //             availablePartyMembers: newAvailablePartyMembers,
-    //         });
-    //     }
-    // };
 
     addToParty = (partyMember) => {
         if (this.props.currentPartyMembers.length + 1 <= this.props.maxPartySize) {
@@ -45,26 +41,28 @@ class PartyBuilder extends Component {
 
     render() {
         return (
-            <div className="partybuilder">
+            <div>
                 <Row>
                     <h1>Party Slots Remaining: {this.props.maxPartySize - this.props.currentPartyMembers.length}</h1>
                 </Row>
                 <Row>
                     <Col sm={6}>
-                        <PartyMemberList
-                            partyMembers={this.props.currentPartyMembers}
-                            listTitle="Current Party Members"
-                            actionLabel="Remove"
-                            actionOnClick={(partyMember) => this.removeFromParty(partyMember)}
-                        />
+                        <PartyMemberList listTitle="Current Party Members">
+                            {this.renderPartyMemberCards(
+                                this.props.currentPartyMembers,
+                                (partyMember) => this.removeFromParty(partyMember),
+                                "Remove",
+                            )}
+                        </PartyMemberList>
                     </Col>
                     <Col sm={6}>
-                        <PartyMemberList
-                            partyMembers={this.props.availablePartyMembers}
-                            listTitle="Available Party Members"
-                            actionLabel="Add"
-                            actionOnClick={(partyMember) => this.addToParty(partyMember)}
-                        />
+                        <PartyMemberList listTitle="Current Party Members">
+                            {this.renderPartyMemberCards(
+                                this.props.availablePartyMembers,
+                                (partyMember) => this.addToParty(partyMember),
+                                "Add",
+                            )}
+                        </PartyMemberList>
                     </Col>
                 </Row>
             </div>
@@ -72,6 +70,7 @@ class PartyBuilder extends Component {
     }
 }
 
+//noinspection JSUnresolvedVariable
 PartyBuilder.propTypes = {
     maxPartySize: PropTypes.number,
     currentPartyMembers: PropTypes.array.isRequired,
